@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>NSAM Social — Admin Dashboard</title>
+<style>
+  :root{
+    --navy:#1f3a5f; --navy-2:#2c4f7c; --gold:#c79a3b; --gold-soft:#f3e9d2;
+    --bg:#eef1f5; --card:#fff; --ink:#1f2733; --muted:#667085; --line:#e3e7ee;
+    --ok:#2e7d52; --warn:#b9791c; --err:#c0392b; --shadow:0 2px 14px rgba(31,58,95,.08);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+  header.bar{background:var(--navy);color:#fff;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  header.bar .brand{font-weight:700}
+  header.bar .brand small{display:block;font-weight:400;opacity:.8;font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+  header.bar button{background:#34507a;border:none;color:#fff;padding:8px 12px;border-radius:8px;font-weight:600;cursor:pointer}
+  .login{max-width:380px;margin:60px auto;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px;box-shadow:var(--shadow)}
+  .login h2{margin:0 0 4px}
+  .login p{color:var(--muted);font-size:13px;margin:0 0 18px}
+  input,select,textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:9px;font-size:14px;background:#fff;color:var(--ink)}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--navy-2);box-shadow:0 0 0 3px rgba(44,79,124,.12)}
+  textarea{min-height:70px;resize:vertical}
+  button.primary{background:var(--navy);color:#fff;border:none;padding:11px 16px;border-radius:9px;font-weight:700;cursor:pointer;width:100%;margin-top:14px}
+  button.primary:disabled{opacity:.5;cursor:not-allowed}
+  .filters{display:flex;gap:8px;flex-wrap:wrap;padding:14px 16px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+  .filters select,.filters input{width:auto;min-width:130px;flex:0 0 auto;font-size:13px;padding:7px 10px}
+  .board{display:flex;gap:14px;overflow-x:auto;padding:16px;align-items:flex-start}
+  .col{flex:0 0 280px;background:#e7ebf1;border-radius:12px;padding:10px;min-height:120px}
+  .col h3{margin:2px 4px 10px;font-size:13px;display:flex;justify-content:space-between;align-items:center}
+  .col h3 .count{background:#fff;border-radius:999px;padding:1px 8px;font-size:12px;color:var(--muted)}
+  .ccard{background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px;margin-bottom:9px;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+  .ccard:hover{border-color:var(--navy-2)}
+  .ccard .t{font-weight:700;font-size:14px}
+  .ccard .m{font-size:12px;color:var(--muted);margin-top:3px}
+  .ccard .tags{margin-top:7px;display:flex;gap:5px;flex-wrap:wrap}
+  .tag{font-size:11px;padding:2px 7px;border-radius:999px;background:#eef1f6;color:#475467}
+  .tag.warn{background:#fdf1dd;color:#9a6a12}
+  .tag.ok{background:#e7f4ec;color:#2e7d52}
+  .tag.err{background:#fbeae8;color:#c0392b}
+  .empty{text-align:center;color:var(--muted);padding:40px;font-size:15px}
+  /* modal */
+  .overlay{position:fixed;inset:0;background:rgba(20,30,45,.5);display:none;align-items:flex-start;justify-content:center;padding:20px;overflow:auto;z-index:20}
+  .overlay.open{display:flex}
+  .modal{background:#fff;border-radius:16px;max-width:680px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+  .modal .mh{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:flex-start;position:sticky;top:0;background:#fff;border-radius:16px 16px 0 0}
+  .modal .mh h2{margin:0;font-size:18px}
+  .modal .mh .x{cursor:pointer;font-size:22px;color:var(--muted);line-height:1;background:none;border:none}
+  .modal .mb{padding:18px 20px}
+  .fld{margin-bottom:12px}
+  .fld .k{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--gold);font-weight:700}
+  .fld .v{font-size:14px;margin-top:2px;word-break:break-word}
+  .fld .v a{color:var(--navy-2)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:560px){.grid2{grid-template-columns:1fr}}
+  .sec{margin:18px 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--navy);font-weight:700;border-top:1px solid var(--line);padding-top:14px}
+  .gate{background:#f8f5ec;border:1px solid #ece0c2;border-radius:10px;padding:12px;margin-top:10px}
+  .gate label{display:flex;gap:9px;align-items:flex-start;font-size:13.5px;margin:7px 0;font-weight:500}
+  .gate input[type=checkbox]{width:18px;height:18px;flex:none;margin-top:2px;accent-color:var(--gold)}
+  .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+  .actions button{flex:1 1 46%;padding:11px;border-radius:9px;border:none;font-weight:700;cursor:pointer;font-size:13.5px}
+  .b-approve{background:var(--ok);color:#fff} .b-approve:disabled{background:#a9c9b6;cursor:not-allowed}
+  .b-rev{background:var(--warn);color:#fff} .b-reject{background:var(--err);color:#fff}
+  .b-neutral{background:#eef1f6;color:var(--navy)}
+  .msg{padding:11px;border-radius:9px;font-size:13px;margin-top:10px}
+  .msg.ok{background:#e7f4ec;border:1px solid #bfe3cd;color:var(--ok)}
+  .msg.err{background:#fbeae8;border:1px solid #f3c6c0;color:var(--err)}
+  .spin{display:inline-block;width:15px;height:15px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:r .7s linear infinite;vertical-align:-2px;margin-right:6px}
+  @keyframes r{to{transform:rotate(360deg)}}
+  .hidden{display:none}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login" class="login">
+  <h2>NSAM Social — Admin</h2>
+  <p>Enter your admin access token to manage submissions. Approvals are recorded against Michael or Danny.</p>
+  <label style="font-size:13px;font-weight:600">Admin access token</label>
+  <input type="password" id="token" placeholder="••••••••" autocomplete="current-password">
+  <button class="primary" id="loginBtn" onclick="login()">Sign in</button>
+  <div id="loginMsg"></div>
+</div>
+
+<!-- APP -->
+<div id="app" class="hidden">
+  <header class="bar">
+    <div class="brand">NSAM Social Media<small>Approval Dashboard</small></div>
+    <div>
+      <button onclick="loadBoard()">↻ Refresh</button>
+      <button onclick="logout()">Sign out</button>
+    </div>
+  </header>
+
+  <div class="filters">
+    <select id="fStatus" onchange="render()"><option value="">All statuses</option></select>
+    <input id="fTeacher" placeholder="Teacher…" oninput="render()">
+    <select id="fContent" onchange="render()"><option value="">All content types</option></select>
+    <select id="fConsent" onchange="render()"><option value="">All consent</option></select>
+    <input id="fMonth" placeholder="Month e.g. 2026-07" oninput="render()">
+  </div>
+
+  <div id="board" class="board"></div>
+  <div id="boardMsg"></div>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="mh"><h2 id="mTitle">Submission</h2><button class="x" onclick="closeModal()">×</button></div>
+    <div class="mb" id="mBody"></div>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script>
+const C = window.NSAM_CONFIG;
+const apiUrl = p => (C.N8N_BASE_URL.replace(/\/$/,'')) + p;
+let TOKEN = "", DATA = [], CURRENT = null;
+
+// populate filters
+C.STATUSES.forEach(s=>addOpt('fStatus',s));
+C.CONTENT_TYPES.forEach(s=>addOpt('fContent',s));
+["Unknown","Release Form Sent","Complete","Restricted","Opted Out","Not Needed / No Identifiable Student","Adult Student Confirmed","Needs Admin Review"].forEach(s=>addOpt('fConsent',s));
+function addOpt(id,v){const o=document.createElement('option');o.value=v;o.textContent=v;document.getElementById(id).appendChild(o)}
+
+// flexible field getter: tolerates "Teacher Name", "Teacher_Name", "teacherName"
+function g(o,...keys){
+  if(!o) return "";
+  for(const k of keys){
+    if(o[k]!=null && o[k]!=="") return o[k];
+    const sp=k.replace(/_/g,' '); if(o[sp]!=null&&o[sp]!=="") return o[sp];
+    const us=k.replace(/ /g,'_'); if(o[us]!=null&&o[us]!=="") return o[us];
+  }
+  return "";
+}
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+async function login(){
+  const t=document.getElementById('token').value.trim();
+  const msg=document.getElementById('loginMsg'); msg.innerHTML='';
+  if(!t){msg.className='msg err';msg.textContent='Enter your token.';return;}
+  if(C.N8N_BASE_URL.includes('YOUR-N8N-INSTANCE')){msg.className='msg err';msg.textContent='Setup needed: n8n URL not set in config.js.';return;}
+  TOKEN=t;
+  const ok=await loadBoard(true);
+  if(ok){document.getElementById('login').classList.add('hidden');document.getElementById('app').classList.remove('hidden');}
+  else{TOKEN="";msg.className='msg err';msg.textContent='Could not sign in. Check the token or n8n setup.';}
+}
+function logout(){TOKEN="";DATA=[];document.getElementById('app').classList.add('hidden');document.getElementById('login').classList.remove('hidden');document.getElementById('token').value='';}
+
+async function loadBoard(silent){
+  const bm=document.getElementById('boardMsg'); if(bm) bm.innerHTML='';
+  try{
+    const res=await fetch(apiUrl(C.WEBHOOKS.adminList),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:TOKEN})});
+    if(res.status===401||res.status===403) return false;
+    if(!res.ok) throw new Error('Server '+res.status);
+    const d=await res.json();
+    DATA=Array.isArray(d)?d:(d.submissions||[]);
+    render();
+    return true;
+  }catch(err){ if(!silent && bm){bm.className='msg err';bm.textContent='Load failed: '+err.message;} return false; }
+}
+
+function render(){
+  const fS=document.getElementById('fStatus').value, fT=document.getElementById('fTeacher').value.toLowerCase(),
+        fC=document.getElementById('fContent').value, fK=document.getElementById('fConsent').value,
+        fM=document.getElementById('fMonth').value;
+  const rows=DATA.filter(r=>{
+    if(fS && g(r,'Current Status','status')!==fS) return false;
+    if(fT && !String(g(r,'Teacher Name','teacherName')).toLowerCase().includes(fT)) return false;
+    if(fC && g(r,'Content Type','contentType')!==fC) return false;
+    if(fK && g(r,'Consent Status')!==fK) return false;
+    if(fM && !String(g(r,'Submission ID','submissionId')).includes(fM)) return false;
+    return true;
+  });
+  const board=document.getElementById('board');
+  if(!rows.length){board.innerHTML='<div class="empty">No submissions match. (New ones appear here as teachers submit.)</div>';return;}
+  const cols=C.STATUSES;
+  board.innerHTML=cols.map(st=>{
+    const items=rows.filter(r=>(g(r,'Current Status','status')||'Submitted')===st);
+    return `<div class="col"><h3>${st}<span class="count">${items.length}</span></h3>${
+      items.map(cardHtml).join('')||'<div style="font-size:12px;color:#90a;opacity:.4;padding:6px">—</div>'}</div>`;
+  }).join('');
+}
+
+function cardHtml(r){
+  const id=g(r,'Submission ID','submissionId');
+  const consent=g(r,'Consent Status')||'Unknown';
+  const cc=/Complete|Not Needed|Adult/.test(consent)?'ok':(/Opted|Restricted/.test(consent)?'err':'warn');
+  return `<div class="ccard" onclick="openModal('${esc(id)}')">
+    <div class="t">${esc(g(r,'Submission Title','title')||'(untitled)')}</div>
+    <div class="m">${esc(id)} · ${esc(g(r,'Teacher Name','teacherName'))}</div>
+    <div class="tags">
+      <span class="tag">${esc(g(r,'Content Type','contentType')||'—')}</span>
+      <span class="tag ${cc}">${esc(consent)}</span>
+    </div></div>`;
+}
+
+function openModal(id){
+  const r=DATA.find(x=>g(x,'Submission ID','submissionId')===id); if(!r)return; CURRENT=r;
+  const consent=g(r,'Consent Status')||'Unknown';
+  const consentDone=/Complete|Not Needed|Adult/.test(consent);
+  const assets=String(g(r,'Asset Links')||'').split(/[\s,]+/).filter(Boolean);
+  const fld=(k,v)=>`<div class="fld"><div class="k">${k}</div><div class="v">${v||'—'}</div></div>`;
+  const link=u=>u?`<a href="${esc(u)}" target="_blank" rel="noopener">open ↗</a>`:'—';
+  document.getElementById('mTitle').textContent=g(r,'Submission Title','title')||'Submission';
+  document.getElementById('mBody').innerHTML=`
+    <div class="grid2">
+      ${fld('Submission ID',esc(g(r,'Submission ID','submissionId')))}
+      ${fld('Status',esc(g(r,'Current Status','status')))}
+      ${fld('Teacher',esc(g(r,'Teacher Name','teacherName')))}
+      ${fld('Teacher email',esc(g(r,'Teacher Email','teacherEmail')))}
+    </div>
+    <div class="sec">Student / family (internal)</div>
+    <div class="grid2">
+      ${fld('Student first',esc(g(r,'Student First Name','studentFirst')))}
+      ${fld('Family (internal)',esc(g(r,'Student Internal Last/Family Name','studentLast')))}
+      ${fld('Parent/guardian',esc(g(r,'Parent/Guardian Name','parentName')))}
+      ${fld('Parent email',esc(g(r,'Parent/Guardian Email','parentEmail')))}
+      ${fld('Public display',esc(g(r,'Public Display Preference','publicDisplay')))}
+      ${fld('Instrument',esc(g(r,'Student Instrument','instrument')))}
+    </div>
+    <div class="sec">Content</div>
+    ${fld('Content type',esc(g(r,'Content Type','contentType')))}
+    ${fld('Achievement / context',esc(g(r,'Student Achievement / Context Text','achievement')))}
+    ${fld('Teacher caption suggestion',esc(g(r,'Teacher Caption Suggestion','captionSuggestion')))}
+    ${fld('Asset folder',link(g(r,'Asset Folder Link')))}
+    ${fld('Assets ('+assets.length+')', assets.map(link).join(' &nbsp; ')||'—')}
+    <div class="sec">Consent</div>
+    ${fld('Consent status','<b>'+esc(consent)+'</b>')}
+    ${fld('Reported by teacher',esc(g(r,'Consent Situation Reported By Teacher')))}
+    ${fld('Signed release form',link(g(r,'Signed Release Form Link')))}
+    ${fld('Restrictions / notes',esc(g(r,'Consent Notes / Restrictions')))}
+    <div class="actions" style="margin-top:6px">
+      <button class="b-neutral" onclick="act('send_release_form')">📧 Send release form</button>
+    </div>
+    <div class="sec">Caption & tags</div>
+    ${fld('AI caption draft',esc(g(r,'AI Caption Draft')))}
+    ${fld('AI hashtags draft',esc(g(r,'AI Hashtags Draft')))}
+    <div class="fld"><div class="k">Final caption</div>
+      <textarea id="finalCaption">${esc(g(r,'Final Caption')||g(r,'AI Caption Draft')||'')}</textarea></div>
+    <div class="fld"><div class="k">Final hashtags</div>
+      <input id="finalHashtags" value="${esc(g(r,'Final Hashtags')||g(r,'AI Hashtags Draft')||'')}"></div>
+    <div class="actions">
+      <button class="b-neutral" onclick="act('redraft_caption')">↻ Redraft (AI)</button>
+      <button class="b-neutral" onclick="act('save_caption')">💾 Save caption</button>
+    </div>
+    <div class="sec">Approval</div>
+    <div class="grid2">
+      <div class="fld"><div class="k">Approving as</div>
+        <select id="approver"><option value="">Select approver…</option>${C.APPROVERS.map(a=>`<option>${a}</option>`).join('')}</select></div>
+      <div class="fld"><div class="k">Public name usage</div>
+        <input id="nameUsage" value="${esc(g(r,'Public Display Preference','publicDisplay'))}"></div>
+    </div>
+    <div class="gate">
+      <label><input type="checkbox" id="gConsent" ${consentDone?'checked':''} onchange="gate()">
+        Consent is complete, or there is no identifiable student. ${consentDone?'(auto-confirmed)':''}</label>
+      <label><input type="checkbox" id="gCaption" onchange="gate()">
+        I have reviewed the final caption.</label>
+      <label><input type="checkbox" id="gName" onchange="gate()">
+        I have reviewed how the student's name is used publicly.</label>
+    </div>
+    <div class="actions">
+      <button class="b-approve" id="approveBtn" disabled onclick="act('approve')">✅ Approve</button>
+      <button class="b-rev" onclick="act('request_revision')">↩ Request revision</button>
+    </div>
+    <div class="sec">Schedule & post</div>
+    <div class="grid2">
+      <div class="fld"><div class="k">Platform(s)</div>
+        <select id="schPlatform" multiple size="3">${C.PLATFORMS.map(p=>`<option>${p}</option>`).join('')}</select></div>
+      <div class="fld"><div class="k">Date</div><input type="date" id="schDate" value="${esc(g(r,'Scheduled Date'))}">
+        <div class="k" style="margin-top:8px">Time</div><input type="time" id="schTime" value="${esc(g(r,'Scheduled Time'))}"></div>
+    </div>
+    <div class="actions">
+      <button class="b-neutral" onclick="act('mark_ready_schedule')">📦 Ready to schedule</button>
+      <button class="b-neutral" onclick="act('mark_scheduled')">🗓 Mark scheduled</button>
+    </div>
+    <div class="grid2" style="margin-top:10px">
+      <div class="fld"><div class="k">Posted link — Instagram</div><input id="linkIG" value="${esc(g(r,'Posted Link Instagram'))}"></div>
+      <div class="fld"><div class="k">Posted link — Facebook</div><input id="linkFB" value="${esc(g(r,'Posted Link Facebook'))}"></div>
+    </div>
+    <div class="actions"><button class="b-neutral" onclick="act('mark_posted')">📣 Mark posted + save links</button></div>
+    <div class="sec">Admin notes & analytics</div>
+    <div class="fld"><div class="k">Admin notes</div><textarea id="adminNotes">${esc(g(r,'Admin Notes'))}</textarea></div>
+    <div class="grid2">
+      ${['Likes','Comments','Views','Shares','Saves'].map(m=>`<div class="fld"><div class="k">${m}</div><input id="m${m}" value="${esc(g(r,m))}"></div>`).join('')}
+    </div>
+    <div class="actions">
+      <button class="b-neutral" onclick="act('save_notes')">💾 Save notes</button>
+      <button class="b-neutral" onclick="act('add_analytics')">💾 Save analytics</button>
+      <button class="b-reject" onclick="act('reject')">⛔ Reject</button>
+    </div>
+    <div id="modalMsg"></div>`;
+  gate();
+  document.getElementById('overlay').classList.add('open');
+}
+function closeModal(){document.getElementById('overlay').classList.remove('open');CURRENT=null;}
+document.getElementById('overlay').addEventListener('click',e=>{if(e.target.id==='overlay')closeModal();});
+
+// Approval gate: all three checks + approver chosen
+function gate(){
+  const ok=document.getElementById('gConsent')?.checked && document.getElementById('gCaption')?.checked
+    && document.getElementById('gName')?.checked && document.getElementById('approver')?.value;
+  const b=document.getElementById('approveBtn'); if(b) b.disabled=!ok;
+}
+document.addEventListener('change',e=>{if(e.target.id==='approver')gate();});
+
+async function act(action){
+  if(!CURRENT)return;
+  const id=g(CURRENT,'Submission ID','submissionId');
+  const msg=document.getElementById('modalMsg'); msg.innerHTML='';
+  const val=i=>{const el=document.getElementById(i);if(!el)return undefined;
+    if(el.multiple)return [...el.selectedOptions].map(o=>o.value);return el.value;};
+  const payload={
+    parentEmail:g(CURRENT,'Parent/Guardian Email','parentEmail'),
+    studentFirst:g(CURRENT,'Student First Name','studentFirst'),
+    finalCaption:val('finalCaption'), finalHashtags:val('finalHashtags'),
+    approver:val('approver'), nameUsage:val('nameUsage'),
+    consentVerified:document.getElementById('gConsent')?.checked,
+    captionReviewed:document.getElementById('gCaption')?.checked,
+    nameReviewed:document.getElementById('gName')?.checked,
+    platforms:val('schPlatform'), scheduledDate:val('schDate'), scheduledTime:val('schTime'),
+    postedLinkInstagram:val('linkIG'), postedLinkFacebook:val('linkFB'),
+    adminNotes:val('adminNotes'),
+    analytics:{Likes:val('mLikes'),Comments:val('mComments'),Views:val('mViews'),Shares:val('mShares'),Saves:val('mSaves')}
+  };
+  if(action==='approve' && !payload.approver){msg.className='msg err';msg.textContent='Choose Michael or Danny as approver.';return;}
+  msg.innerHTML='<div class="msg"><span class="spin"></span>Working…</div>';
+  try{
+    const res=await fetch(apiUrl(C.WEBHOOKS.adminAction),{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({token:TOKEN,action,submissionId:id,payload})});
+    if(!res.ok) throw new Error('Server '+res.status);
+    let d={};try{d=await res.json()}catch(_){}
+    msg.className='msg ok'; msg.textContent=(d.message||'Done.')+' Refreshing…';
+    await loadBoard(true);
+    const updated=DATA.find(x=>g(x,'Submission ID','submissionId')===id);
+    if(updated){CURRENT=updated; setTimeout(()=>openModal(id),400);} else closeModal();
+  }catch(err){ msg.className='msg err'; msg.textContent='Action failed: '+err.message; }
+}
+</script>
+</body>
+</html>
