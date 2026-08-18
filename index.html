@@ -7,8 +7,8 @@
 <title>NSAM Social Media Submission</title>
 <style>
   :root{
-    --navy:#1f3a5f; --navy-2:#2c4f7c; --gold:#c79a3b; --gold-soft:#f3e9d2;
-    --bg:#f6f7f9; --card:#ffffff; --ink:#1f2733; --muted:#667085;
+    --navy:#1585bd; --navy-2:#0f6a99; --gold:#c07d24; --gold-soft:#fdeed6;
+    --bg:#f2f4f6; --card:#ffffff; --ink:#3a3f47; --muted:#6b7280;
     --line:#e3e7ee; --ok:#2e7d52; --warn:#b9791c; --err:#c0392b;
     --radius:14px; --shadow:0 2px 14px rgba(31,58,95,.08);
   }
@@ -30,7 +30,7 @@
   .hint{font-weight:400;color:var(--muted);font-size:12.5px;margin-top:2px}
   input[type=text],input[type=email],input[type=date],input[type=time],select,textarea{
     width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;font-size:16px;background:#fff;color:var(--ink)}
-  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--navy-2);box-shadow:0 0 0 3px rgba(44,79,124,.12)}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(41,171,226,.18)}
   textarea{min-height:74px;resize:vertical}
   .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   @media(max-width:520px){.row2{grid-template-columns:1fr}}
@@ -67,7 +67,7 @@
   details.optional>summary::-webkit-details-marker{display:none}
   details.optional .body{padding:2px 16px 16px}
 
-  .confirm{display:flex;gap:10px;align-items:flex-start;margin-top:16px;font-size:14px;font-weight:500;background:#f8f5ec;border:1px solid #ece0c2;border-radius:11px;padding:13px}
+  .confirm{display:flex;gap:10px;align-items:flex-start;margin-top:16px;font-size:14px;font-weight:500;background:#fdeed6;border:1px solid #f0d7a8;border-radius:11px;padding:13px}
   .confirm input{margin-top:2px;width:19px;height:19px;flex:none;accent-color:var(--gold)}
 
   button.primary{width:100%;margin-top:18px;padding:16px;background:var(--navy);color:#fff;border:none;border-radius:12px;font-size:17px;font-weight:700;cursor:pointer;transition:.15s}
@@ -155,11 +155,8 @@
       <textarea id="achievement" placeholder="A sentence or two is plenty. Example: Nathan played his first complete Mozart sonata today."></textarea>
 
       <!-- Family contact -->
-      <div class="sec-h">Family contact <span class="sec-sub">Used only if NSAM needs permission to share the content.</span></div>
-      <div class="row2">
-        <div><label>Parent/guardian name</label><input type="text" id="parentName"></div>
-        <div><label>Parent/guardian email</label><input type="email" id="parentEmail" autocomplete="off"></div>
-      </div>
+      <div class="sec-h">Family contact</div>
+      <div><label>Parent/guardian name</label><input type="text" id="parentName"></div>
 
       <!-- Permission -->
       <div class="sec-h">Permission</div>
@@ -179,10 +176,7 @@
             <div><label>Student pronouns</label><input type="text" id="pronouns"></div>
             <div><label>Date of achievement</label><input type="date" id="achievementDate"></div>
           </div>
-          <div class="row2">
-            <div><label>Location / event</label><input type="text" id="location"></div>
-            <div><label>Teacher credit preference</label><input type="text" id="teacherCredit"></div>
-          </div>
+          <div><label>Location / event</label><input type="text" id="location"></div>
           <label>Notes / restrictions</label><textarea id="notes"></textarea>
         </div>
       </details>
@@ -309,8 +303,8 @@ $('backToSubmit').addEventListener('click',e=>{e.preventDefault();show('submit')
 $('anotherBtn').addEventListener('click',()=>{ resetContentFields(); show('submit'); });
 
 function resetContentFields(){
-  ['studentFirst','studentLast','achievement','parentName','parentEmail','instrument',
-   'captionSuggestion','pronouns','achievementDate','location','teacherCredit','notes'].forEach(id=>{ if($(id)) $(id).value=''; });
+  ['studentFirst','studentLast','achievement','parentName','instrument',
+   'captionSuggestion','pronouns','achievementDate','location','notes'].forEach(id=>{ if($(id)) $(id).value=''; });
   chosen=[]; renderFiles();
   document.querySelectorAll('input[name=perm]').forEach(r=>r.checked=false);
   document.querySelectorAll('.choice').forEach(c=>c.classList.remove('sel'));
@@ -331,7 +325,7 @@ $('subForm').addEventListener('submit', async e=>{
 
   const perm = (document.querySelector('input[name=perm]:checked')||{}).value;
   const achievement = $('achievement').value.trim();
-  const parentName=$('parentName').value.trim(), parentEmail=$('parentEmail').value.trim();
+  const parentName=$('parentName').value.trim();
 
   // Minimal validation
   const need=[];
@@ -339,7 +333,7 @@ $('subForm').addEventListener('submit', async e=>{
   if(!$('studentFirst').value.trim() || !$('studentLast').value.trim()) need.push('the student’s first and last name');
   if(!achievement) need.push('what happened');
   if(!perm) need.push('a permission choice');
-  if((perm==='form'||perm==='unsure') && (!parentName || !parentEmail)) need.push('parent/guardian name and email (needed for the release form)');
+  if((perm==='form'||perm==='unsure') && !parentName) need.push('the parent/guardian name');
   if(!$('confirmFam').checked) need.push('the confirmation checkbox');
   if(need.length){ msg.className='msg err'; msg.textContent='Please add: '+need.join('; ')+'.'; return; }
   if(C.N8N_BASE_URL.includes('YOUR-N8N-INSTANCE')){ msg.className='msg err'; msg.textContent='Setup needed: n8n URL not configured (config.js).'; return; }
@@ -351,7 +345,7 @@ $('subForm').addEventListener('submit', async e=>{
   fd.set('studentFirst', $('studentFirst').value.trim());
   fd.set('studentLast', $('studentLast').value.trim());
   fd.set('parentName', parentName);
-  fd.set('parentEmail', parentEmail);
+  fd.set('parentEmail', '');
   fd.set('achievement', achievement);
   fd.set('title', makeTitle(achievement));            // generated, not asked
   fd.set('contentType', inferContentType());           // inferred from media
@@ -362,7 +356,6 @@ $('subForm').addEventListener('submit', async e=>{
   fd.set('pronouns', $('pronouns').value.trim());
   fd.set('achievementDate', $('achievementDate').value);
   fd.set('location', $('location').value.trim());
-  fd.set('teacherCredit', $('teacherCredit').value.trim());
   fd.set('notes', $('notes').value.trim());
   fd.set('confirmTold', 'true');                        // backend-compatible confirmations
   fd.set('confirmConsent', 'true');
