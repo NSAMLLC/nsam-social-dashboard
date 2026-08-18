@@ -15,46 +15,79 @@
   *{box-sizing:border-box}
   body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
-  header.site{background:linear-gradient(135deg,var(--navy),var(--navy-2));color:#fff;padding:22px 18px;text-align:center}
-  header.site .brand{font-size:13px;letter-spacing:.14em;text-transform:uppercase;opacity:.85}
-  header.site h1{margin:6px 0 2px;font-size:21px;font-weight:700}
-  header.site p{margin:0;font-size:13px;opacity:.9}
-  .wrap{max-width:640px;margin:0 auto;padding:16px 14px 60px}
-  .tabs{display:flex;gap:8px;margin:16px 0}
-  .tab{flex:1;text-align:center;padding:11px;border-radius:999px;background:#eef1f6;color:var(--muted);
-    font-weight:600;font-size:14px;cursor:pointer;border:1px solid transparent;user-select:none}
-  .tab.active{background:var(--navy);color:#fff;box-shadow:var(--shadow)}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);margin-bottom:16px}
-  .notice{background:var(--gold-soft);border:1px solid #e7d6a8;border-radius:12px;padding:14px;font-size:13.5px;color:#5a4a1f;margin-bottom:16px}
-  .notice b{color:#4a3c14}
-  .notice ul{margin:8px 0 0;padding-left:18px}
-  label{display:block;font-weight:600;font-size:13.5px;margin:14px 0 5px}
+  header.site{background:linear-gradient(135deg,var(--navy),var(--navy-2));color:#fff;padding:20px 18px;text-align:center}
+  header.site .brand{font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.85}
+  header.site h1{margin:5px 0 4px;font-size:22px;font-weight:700}
+  header.site p{margin:0;font-size:14px;opacity:.95}
+  .wrap{max-width:620px;margin:0 auto;padding:16px 14px 60px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);margin-bottom:14px}
+  .lede{font-size:14.5px;color:#41506a;margin:2px 0 14px}
+  details.why{margin-top:8px;font-size:13px;color:var(--muted)}
+  details.why summary{cursor:pointer;color:var(--navy-2);font-weight:600}
+  details.why p{margin:8px 0 0}
+  label{display:block;font-weight:600;font-size:14px;margin:14px 0 5px}
   label .req{color:var(--err)}
   .hint{font-weight:400;color:var(--muted);font-size:12.5px;margin-top:2px}
-  input[type=text],input[type=email],input[type=date],select,textarea{
-    width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;font-size:15px;background:#fff;color:var(--ink)}
+  input[type=text],input[type=email],input[type=date],input[type=time],select,textarea{
+    width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;font-size:16px;background:#fff;color:var(--ink)}
   input:focus,select:focus,textarea:focus{outline:none;border-color:var(--navy-2);box-shadow:0 0 0 3px rgba(44,79,124,.12)}
-  textarea{min-height:78px;resize:vertical}
+  textarea{min-height:74px;resize:vertical}
   .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   @media(max-width:520px){.row2{grid-template-columns:1fr}}
-  .filedrop{border:2px dashed #c7d0de;border-radius:12px;padding:18px;text-align:center;background:#fafbfd;cursor:pointer}
-  .filedrop:hover{border-color:var(--navy-2);background:#f3f6fb}
-  .filedrop input{display:none}
-  .filelist{margin-top:10px;font-size:13px;color:var(--muted)}
-  .filelist .f{display:flex;justify-content:space-between;padding:6px 10px;background:#f4f6fa;border-radius:8px;margin-top:6px}
-  .chk{display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-size:13.5px;font-weight:500;background:#f8f5ec;border:1px solid #ece0c2;border-radius:10px;padding:12px}
-  .chk input{margin-top:3px;width:18px;height:18px;flex:none;accent-color:var(--gold)}
-  .section-h{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);font-weight:700;margin:22px 0 2px;border-top:1px solid var(--line);padding-top:16px}
-  .section-h:first-child{border-top:none;padding-top:0}
-  button.primary{width:100%;margin-top:20px;padding:14px;background:var(--navy);color:#fff;border:none;border-radius:12px;
-    font-size:16px;font-weight:700;cursor:pointer;transition:.15s}
+  .sec-h{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);font-weight:700;margin:20px 0 2px}
+  .sec-sub{font-weight:400;color:var(--muted);font-size:12.5px;text-transform:none;letter-spacing:0;margin-top:2px}
+
+  /* Teacher identity bar */
+  .who{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#eef2f8;border:1px solid #dce4f0;border-radius:12px;padding:12px 14px;font-size:14px}
+  .who b{color:var(--navy)}
+  .who a{color:var(--navy-2);font-weight:600;text-decoration:none;font-size:13px;white-space:nowrap}
+  .remember{display:flex;gap:9px;align-items:center;font-size:13.5px;font-weight:500;margin-top:12px;color:#41506a}
+  .remember input{width:18px;height:18px;accent-color:var(--gold)}
+
+  /* Big upload */
+  .upload{border:2px dashed #bcccdf;border-radius:14px;padding:26px 16px;text-align:center;background:#f5f8fd;cursor:pointer;transition:.15s}
+  .upload:hover,.upload.drag{border-color:var(--navy-2);background:#eef4fc}
+  .upload input{display:none}
+  .upload .plus{font-size:20px;font-weight:700;color:var(--navy)}
+  .upload .big{font-size:16px;font-weight:700;color:var(--navy);margin-top:2px}
+  .upload .sub{font-size:12.5px;color:var(--muted);margin-top:3px}
+  .filelist{margin-top:10px}
+  .filelist .f{display:flex;justify-content:space-between;align-items:center;padding:9px 12px;background:#f4f6fa;border-radius:9px;margin-top:7px;font-size:13.5px}
+  .filelist .f .rm{color:var(--err);cursor:pointer;font-weight:700;padding:0 4px}
+
+  /* Permission radio cards */
+  .choices{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+  .choice{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:11px;padding:12px 13px;cursor:pointer;font-size:14.5px;font-weight:500}
+  .choice:hover{border-color:var(--navy-2)}
+  .choice input{margin-top:2px;width:18px;height:18px;flex:none;accent-color:var(--gold)}
+  .choice.sel{border-color:var(--navy-2);background:#f3f7fd}
+
+  details.optional{border:1px solid var(--line);border-radius:12px;padding:0;margin-top:6px;overflow:hidden}
+  details.optional>summary{cursor:pointer;list-style:none;padding:14px 16px;font-weight:700;color:var(--navy);font-size:14.5px;background:#fafbfd}
+  details.optional>summary::-webkit-details-marker{display:none}
+  details.optional .body{padding:2px 16px 16px}
+
+  .confirm{display:flex;gap:10px;align-items:flex-start;margin-top:16px;font-size:14px;font-weight:500;background:#f8f5ec;border:1px solid #ece0c2;border-radius:11px;padding:13px}
+  .confirm input{margin-top:2px;width:19px;height:19px;flex:none;accent-color:var(--gold)}
+
+  button.primary{width:100%;margin-top:18px;padding:16px;background:var(--navy);color:#fff;border:none;border-radius:12px;font-size:17px;font-weight:700;cursor:pointer;transition:.15s}
   button.primary:hover{background:var(--navy-2)}
   button.primary:disabled{opacity:.55;cursor:not-allowed}
-  button.ghost{padding:11px 16px;background:#eef1f6;color:var(--navy);border:none;border-radius:10px;font-weight:600;cursor:pointer}
-  .hidden{display:none}
-  .msg{padding:14px;border-radius:12px;font-size:14px;margin-top:14px}
-  .msg.ok{background:#e7f4ec;border:1px solid #bfe3cd;color:var(--ok)}
+  .msg{padding:13px;border-radius:11px;font-size:14px;margin-top:14px}
   .msg.err{background:#fbeae8;border:1px solid #f3c6c0;color:var(--err)}
+  .seclink{text-align:center;margin-top:14px}
+  .seclink a{color:var(--navy-2);font-weight:600;text-decoration:none;font-size:14px}
+  .spin{display:inline-block;width:16px;height:16px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:r .7s linear infinite;vertical-align:-3px;margin-right:7px}
+  @keyframes r{to{transform:rotate(360deg)}}
+  .hidden{display:none}
+
+  /* success */
+  .success{text-align:center;padding:26px 18px}
+  .success .big{font-size:26px;font-weight:800;color:var(--navy);margin-bottom:4px}
+  .success p{color:#41506a;margin:6px 0}
+  .success .idpill{display:inline-block;margin-top:8px;background:#eef2f8;border:1px solid #dce4f0;border-radius:999px;padding:6px 14px;font-weight:700;color:var(--navy)}
+
+  /* status view */
   .statuspill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:700}
   .s-Submitted,.s-Caption{background:#eef1f6;color:#475467}
   .s-Needs{background:#fdf1dd;color:#9a6a12}
@@ -65,113 +98,125 @@
   .sub-item{border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:12px}
   .sub-item .t{font-weight:700}
   .sub-item .meta{font-size:12.5px;color:var(--muted);margin-top:3px}
-  .empty{text-align:center;color:var(--muted);padding:30px 10px;font-size:15px}
-  footer{text-align:center;font-size:12px;color:var(--muted);padding:20px}
-  .spin{display:inline-block;width:16px;height:16px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:r .7s linear infinite;vertical-align:-3px;margin-right:6px}
-  @keyframes r{to{transform:rotate(360deg)}}
+  .empty{text-align:center;color:var(--muted);padding:26px 10px;font-size:15px}
+  footer{text-align:center;font-size:12px;color:var(--muted);padding:18px}
 </style>
 </head>
 <body>
 <header class="site">
   <div class="brand">Nassau-Suffolk Academy of Music</div>
   <h1>Social Media Submission</h1>
-  <p>Share a student moment worth celebrating 🎵</p>
+  <p>Share something worth celebrating 🎵</p>
 </header>
 
 <div class="wrap">
-  <div class="tabs">
-    <div class="tab active" id="tab-submit" onclick="showView('submit')">Submit content</div>
-    <div class="tab" id="tab-status" onclick="showView('status')">Check my status</div>
-  </div>
 
-  <!-- ================= SUBMIT VIEW ================= -->
+  <!-- ================= SUBMIT ================= -->
   <section id="view-submit">
-    <div class="notice">
-      <b>Before you submit:</b>
-      <ul>
-        <li>Submit <b>one student / post idea at a time</b> — you can attach multiple photos, videos, or audio files in this one submission.</li>
-        <li><b>Tell the parent/guardian first:</b> NSAM may email them a quick release form before anything is posted.</li>
-        <li>NSAM will <b>not post identifiable student content</b> until consent is confirmed by an admin.</li>
-      </ul>
-    </div>
+    <form id="subForm" class="card" novalidate>
+      <p class="lede">Send us the photo, video, or audio and tell us what happened. NSAM will handle captions, consent, and posting approval.</p>
+      <details class="why"><summary>How consent works</summary>
+        <p>NSAM only posts identifiable students with a parent/guardian's permission. If we don't have it yet, an admin sends a quick release form — you don't need to sort that out here.</p>
+      </details>
 
-    <form id="subForm" class="card">
-      <div class="section-h">Who's submitting</div>
-      <div class="row2">
-        <div><label>Your name <span class="req">*</span></label><input type="text" name="teacherName" required></div>
-        <div><label>Your email <span class="req">*</span></label><input type="email" name="teacherEmail" required></div>
+      <!-- Teacher identity -->
+      <div id="whoBar" class="who hidden">
+        <div>Submitting as <b id="whoName"></b></div>
+        <a href="#" id="notYou">Not you?</a>
+      </div>
+      <div id="teacherFields">
+        <div class="sec-h">You</div>
+        <div class="row2">
+          <div><label>Your name <span class="req">*</span></label><input type="text" id="teacherName" autocomplete="name"></div>
+          <div><label>Your email <span class="req">*</span></label><input type="email" id="teacherEmail" autocomplete="email"></div>
+        </div>
+        <label class="remember"><input type="checkbox" id="remember" checked> Remember me on this device</label>
       </div>
 
-      <div class="section-h">About the student</div>
+      <!-- Student -->
+      <div class="sec-h">Student</div>
       <div class="row2">
-        <div><label>Student first name <span class="req">*</span></label><input type="text" name="studentFirst" required></div>
-        <div><label>Student last / family name <span class="req">*</span>
-          <div class="hint">Internal only — never posted publicly.</div></label><input type="text" name="studentLast" required></div>
+        <div><label>First name <span class="req">*</span></label><input type="text" id="studentFirst"></div>
+        <div><label>Last / family name <span class="req">*</span><div class="hint">Internal only — never posted.</div></label><input type="text" id="studentLast"></div>
       </div>
-      <div class="row2">
-        <div><label>Parent/guardian name <span class="req">*</span></label><input type="text" name="parentName" required></div>
-        <div><label>Parent/guardian email <span class="req">*</span>
-          <div class="hint">Used to send the release form if needed.</div></label><input type="email" name="parentEmail" required></div>
-      </div>
-      <div><label>Instrument <span class="hint">(optional)</span></label><input type="text" name="instrument" placeholder="e.g. Violin, Piano, Voice"></div>
 
-      <div class="section-h">The content</div>
-      <div><label>Content type <span class="req">*</span></label>
-        <select name="contentType" required><option value="">Select…</option></select></div>
-      <div><label>Submission title / short description <span class="req">*</span></label>
-        <input type="text" name="title" required placeholder="e.g. Spring recital — first solo"></div>
-      <div><label>Student achievement / context <span class="req">*</span>
-        <div class="hint">What happened? Why is it special? This helps draft the caption.</div></label>
-        <textarea name="achievement" required></textarea></div>
-
-      <div class="section-h">How the name may be shown</div>
-      <div><label>Public display preference <span class="req">*</span></label>
-        <select name="publicDisplay" required><option value="">Select…</option></select></div>
-
-      <div class="section-h">Consent situation</div>
-      <div><label>What best describes consent? <span class="req">*</span>
-        <div class="hint">Admins make the final call — this is just to help.</div></label>
-        <select name="consentSituation" required><option value="">Select…</option></select></div>
-
-      <div class="section-h">Upload assets</div>
-      <label>Photos / videos / audio <span class="hint">(you can pick several)</span></label>
-      <label class="filedrop">
-        <input type="file" id="files" name="files" multiple accept="image/*,video/*,audio/*">
-        <div>📎 Tap to choose files</div>
-        <div class="hint">Photos, videos, audio. Multiple allowed.</div>
+      <!-- Media -->
+      <div class="sec-h">Add photos, videos, or audio</div>
+      <label class="upload" id="drop">
+        <input type="file" id="files" multiple accept="image/*,video/*,audio/*">
+        <div class="plus">＋</div>
+        <div class="big">Add photos, videos, or audio</div>
+        <div class="sub">Tap to choose from your phone · you can add several</div>
       </label>
       <div class="filelist" id="filelist"></div>
 
-      <div class="section-h">Optional details</div>
-      <div><label>Your caption suggestion</label><textarea name="captionSuggestion" placeholder="Optional — a starting point for the caption"></textarea></div>
-      <div class="row2">
-        <div><label>Student pronouns</label><input type="text" name="pronouns" placeholder="optional, for caption"></div>
-        <div><label>Date of achievement / performance</label><input type="date" name="achievementDate"></div>
-      </div>
-      <div class="row2">
-        <div><label>Location / event</label><input type="text" name="location"></div>
-        <div><label>Teacher credit preference</label><input type="text" name="teacherCredit" placeholder="e.g. credit me / no credit"></div>
-      </div>
-      <div><label>Notes / restrictions</label><textarea name="notes" placeholder="Anything the team should know"></textarea></div>
+      <!-- What happened -->
+      <div class="sec-h">What happened?</div>
+      <textarea id="achievement" placeholder="A sentence or two is plenty. Example: Nathan played his first complete Mozart sonata today."></textarea>
 
-      <div class="section-h">Confirm</div>
-      <label class="chk"><input type="checkbox" name="confirmTold" required>
-        I have told the parent/guardian that NSAM may send a social media release form before this content can be posted.</label>
-      <label class="chk"><input type="checkbox" name="confirmConsent" required>
-        I understand NSAM will not post identifiable student content until consent is confirmed.</label>
+      <!-- Family contact -->
+      <div class="sec-h">Family contact <span class="sec-sub">Used only if NSAM needs permission to share the content.</span></div>
+      <div class="row2">
+        <div><label>Parent/guardian name</label><input type="text" id="parentName"></div>
+        <div><label>Parent/guardian email</label><input type="email" id="parentEmail" autocomplete="off"></div>
+      </div>
 
-      <button type="submit" class="primary" id="submitBtn">Submit content</button>
+      <!-- Permission -->
+      <div class="sec-h">Permission</div>
+      <div class="choices" id="permChoices">
+        <label class="choice"><input type="radio" name="perm" value="have"><span>NSAM already has permission / I believe so</span></label>
+        <label class="choice"><input type="radio" name="perm" value="form"><span>They'll need a release form</span></label>
+        <label class="choice"><input type="radio" name="perm" value="unsure"><span>I'm not sure</span></label>
+      </div>
+
+      <!-- Optional -->
+      <details class="optional">
+        <summary>＋ Add optional details</summary>
+        <div class="body">
+          <label>Instrument</label><input type="text" id="instrument" placeholder="e.g. Violin, Piano, Voice">
+          <label>Caption suggestion</label><textarea id="captionSuggestion" placeholder="Optional starting point for the caption"></textarea>
+          <div class="row2">
+            <div><label>Student pronouns</label><input type="text" id="pronouns"></div>
+            <div><label>Date of achievement</label><input type="date" id="achievementDate"></div>
+          </div>
+          <div class="row2">
+            <div><label>Location / event</label><input type="text" id="location"></div>
+            <div><label>Teacher credit preference</label><input type="text" id="teacherCredit"></div>
+          </div>
+          <label>Notes / restrictions</label><textarea id="notes"></textarea>
+        </div>
+      </details>
+
+      <!-- Confirmation -->
+      <label class="confirm"><input type="checkbox" id="confirmFam">
+        I've let the family know NSAM may contact them for permission if needed.</label>
+
+      <button type="submit" class="primary" id="submitBtn">Submit</button>
       <div id="subMsg"></div>
     </form>
+
+    <div class="seclink"><a href="#" id="toStatus">View my submissions →</a></div>
   </section>
 
-  <!-- ================= STATUS VIEW ================= -->
+  <!-- ================= SUCCESS ================= -->
+  <section id="view-success" class="hidden">
+    <div class="card success">
+      <div class="big">Submitted! 🎵</div>
+      <p>Thanks — NSAM has it from here.</p>
+      <div class="idpill" id="successId"></div>
+      <p style="font-size:13px;color:var(--muted);margin-top:14px">You'll get a confirmation email. Track it anytime under "View my submissions."</p>
+      <button class="primary" id="anotherBtn" style="max-width:280px;margin-left:auto;margin-right:auto">Submit another</button>
+    </div>
+  </section>
+
+  <!-- ================= STATUS ================= -->
   <section id="view-status" class="hidden">
     <div class="card">
+      <div class="seclink" style="text-align:left;margin:0 0 12px"><a href="#" id="backToSubmit">← Back to submit</a></div>
       <label>Look up your submissions</label>
-      <div class="hint" style="margin-bottom:10px">Enter the email you submitted with, or a specific Submission ID (e.g. SM-2026-07-001).</div>
+      <div class="hint" style="margin-bottom:10px">Enter the email you submitted with, or a Submission ID (e.g. SM-2026-07-001).</div>
       <input type="text" id="lookup" placeholder="you@email.com  or  SM-2026-07-001">
-      <button class="primary" id="lookupBtn" onclick="lookupStatus()">Check status</button>
+      <button class="primary" id="lookupBtn">Check status</button>
       <div id="statusMsg"></div>
     </div>
     <div id="statusResults"></div>
@@ -184,83 +229,192 @@
 <script>
 const C = window.NSAM_CONFIG;
 const url = p => (C.N8N_BASE_URL.replace(/\/$/,'')) + p;
+const $ = id => document.getElementById(id);
+const LSKEY = 'nsam_teacher';
 
-// Populate dropdowns
-function fill(sel, arr){const s=document.querySelector(sel);arr.forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;s.appendChild(o)})}
-fill('[name=contentType]', C.CONTENT_TYPES);
-fill('[name=publicDisplay]', C.PUBLIC_DISPLAY);
-fill('[name=consentSituation]', C.CONSENT_SITUATIONS);
-
-function showView(v){
-  document.getElementById('view-submit').classList.toggle('hidden', v!=='submit');
-  document.getElementById('view-status').classList.toggle('hidden', v!=='status');
-  document.getElementById('tab-submit').classList.toggle('active', v==='submit');
-  document.getElementById('tab-status').classList.toggle('active', v==='status');
+// ---- Teacher identity (localStorage: name + email ONLY) ----
+let teacher = null;
+try { teacher = JSON.parse(localStorage.getItem(LSKEY) || 'null'); } catch(_) {}
+function renderWho(){
+  if(teacher && teacher.name){
+    $('whoBar').classList.remove('hidden');
+    $('teacherFields').classList.add('hidden');
+    $('whoName').textContent = teacher.name;
+  } else {
+    $('whoBar').classList.add('hidden');
+    $('teacherFields').classList.remove('hidden');
+  }
 }
-
-// File list preview
-document.getElementById('files').addEventListener('change', e=>{
-  const list=document.getElementById('filelist'); list.innerHTML='';
-  [...e.target.files].forEach(f=>{
-    const kb=(f.size/1024).toFixed(0);
-    const d=document.createElement('div'); d.className='f';
-    d.innerHTML=`<span>${f.name}</span><span>${kb} KB</span>`; list.appendChild(d);
-  });
+renderWho();
+$('notYou').addEventListener('click', e=>{
+  e.preventDefault(); teacher=null; localStorage.removeItem(LSKEY);
+  $('teacherName').value=''; $('teacherEmail').value=''; renderWho();
 });
 
-// Submit
-document.getElementById('subForm').addEventListener('submit', async e=>{
+// ---- Files ----
+let chosen = [];
+const filesInput = $('files');
+filesInput.addEventListener('change', e=>{ addFiles(e.target.files); });
+const drop = $('drop');
+['dragover','dragenter'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('drag');}));
+['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('drag');}));
+drop.addEventListener('drop', e=>{ if(e.dataTransfer.files) addFiles(e.dataTransfer.files); });
+function addFiles(list){ [...list].forEach(f=>chosen.push(f)); renderFiles(); }
+function renderFiles(){
+  const el=$('filelist'); el.innerHTML='';
+  chosen.forEach((f,i)=>{
+    const kb=(f.size/1024).toFixed(0);
+    const d=document.createElement('div'); d.className='f';
+    d.innerHTML=`<span>${f.name} · ${kb} KB</span><span class="rm" data-i="${i}">✕</span>`;
+    el.appendChild(d);
+  });
+  el.querySelectorAll('.rm').forEach(x=>x.addEventListener('click',()=>{ chosen.splice(+x.dataset.i,1); renderFiles(); }));
+}
+
+// ---- Permission selection styling ----
+document.querySelectorAll('input[name=perm]').forEach(r=>r.addEventListener('change',()=>{
+  document.querySelectorAll('.choice').forEach(c=>c.classList.toggle('sel', c.querySelector('input').checked));
+}));
+
+// ---- Derivations (keep backend fields, generate values) ----
+function inferContentType(){
+  if(!chosen.length) return 'Student achievement text';
+  const t=(chosen[0].type||'');
+  if(t.startsWith('image/')) return 'Photo';
+  if(t.startsWith('video/')) return 'Video';
+  if(t.startsWith('audio/')) return 'Audio';
+  return 'Photo';
+}
+function makeTitle(s){
+  s=(s||'').trim(); if(!s) return 'Student submission';
+  const first=s.split(/(?<=[.!?])\s/)[0];
+  let t = first.length<=70 ? first : s.slice(0,70).trim()+'…';
+  return t.replace(/\s+/g,' ');
+}
+const PERM_MAP = {
+  have:  'Parent already signed / likely on file',
+  form:  'Parent needs release form',
+  unsure:'Unsure'
+};
+
+// ---- View switching ----
+function show(v){
+  $('view-submit').classList.toggle('hidden', v!=='submit');
+  $('view-success').classList.toggle('hidden', v!=='success');
+  $('view-status').classList.toggle('hidden', v!=='status');
+  window.scrollTo(0,0);
+}
+$('toStatus').addEventListener('click',e=>{e.preventDefault();show('status');});
+$('backToSubmit').addEventListener('click',e=>{e.preventDefault();show('submit');});
+$('anotherBtn').addEventListener('click',()=>{ resetContentFields(); show('submit'); });
+
+function resetContentFields(){
+  ['studentFirst','studentLast','achievement','parentName','parentEmail','instrument',
+   'captionSuggestion','pronouns','achievementDate','location','teacherCredit','notes'].forEach(id=>{ if($(id)) $(id).value=''; });
+  chosen=[]; renderFiles();
+  document.querySelectorAll('input[name=perm]').forEach(r=>r.checked=false);
+  document.querySelectorAll('.choice').forEach(c=>c.classList.remove('sel'));
+  $('confirmFam').checked=false;
+}
+
+// ---- Submit ----
+let submitting=false;
+$('subForm').addEventListener('submit', async e=>{
   e.preventDefault();
-  const btn=document.getElementById('submitBtn'), msg=document.getElementById('subMsg');
-  msg.innerHTML='';
-  if(C.N8N_BASE_URL.includes('YOUR-N8N-INSTANCE')){
-    msg.className='msg err'; msg.textContent='Setup needed: the n8n URL is not configured yet (edit config.js).'; return;
-  }
-  btn.disabled=true; btn.innerHTML='<span class="spin"></span>Submitting…';
+  if(submitting) return;
+  const msg=$('subMsg'); msg.innerHTML='';
+
+  // Resolve teacher
+  let tName, tEmail;
+  if(teacher && teacher.name){ tName=teacher.name; tEmail=teacher.email; }
+  else { tName=$('teacherName').value.trim(); tEmail=$('teacherEmail').value.trim(); }
+
+  const perm = (document.querySelector('input[name=perm]:checked')||{}).value;
+  const achievement = $('achievement').value.trim();
+  const parentName=$('parentName').value.trim(), parentEmail=$('parentEmail').value.trim();
+
+  // Minimal validation
+  const need=[];
+  if(!tName || !tEmail) need.push('your name and email');
+  if(!$('studentFirst').value.trim() || !$('studentLast').value.trim()) need.push('the student’s first and last name');
+  if(!achievement) need.push('what happened');
+  if(!perm) need.push('a permission choice');
+  if((perm==='form'||perm==='unsure') && (!parentName || !parentEmail)) need.push('parent/guardian name and email (needed for the release form)');
+  if(!$('confirmFam').checked) need.push('the confirmation checkbox');
+  if(need.length){ msg.className='msg err'; msg.textContent='Please add: '+need.join('; ')+'.'; return; }
+  if(C.N8N_BASE_URL.includes('YOUR-N8N-INSTANCE')){ msg.className='msg err'; msg.textContent='Setup needed: n8n URL not configured (config.js).'; return; }
+
+  // Build backend-compatible payload
+  const fd=new FormData();
+  fd.set('teacherName', tName);
+  fd.set('teacherEmail', tEmail);
+  fd.set('studentFirst', $('studentFirst').value.trim());
+  fd.set('studentLast', $('studentLast').value.trim());
+  fd.set('parentName', parentName);
+  fd.set('parentEmail', parentEmail);
+  fd.set('achievement', achievement);
+  fd.set('title', makeTitle(achievement));            // generated, not asked
+  fd.set('contentType', inferContentType());           // inferred from media
+  fd.set('publicDisplay', 'First name only');          // safe default; admin still reviews
+  fd.set('consentSituation', PERM_MAP[perm]);          // mapped to existing backend value
+  fd.set('instrument', $('instrument').value.trim());
+  fd.set('captionSuggestion', $('captionSuggestion').value.trim());
+  fd.set('pronouns', $('pronouns').value.trim());
+  fd.set('achievementDate', $('achievementDate').value);
+  fd.set('location', $('location').value.trim());
+  fd.set('teacherCredit', $('teacherCredit').value.trim());
+  fd.set('notes', $('notes').value.trim());
+  fd.set('confirmTold', 'true');                        // backend-compatible confirmations
+  fd.set('confirmConsent', 'true');
+  chosen.forEach(f=>fd.append('files', f));
+
+  submitting=true;
+  const btn=$('submitBtn'); btn.disabled=true; btn.innerHTML='<span class="spin"></span>Submitting…';
   try{
-    const fd=new FormData(e.target);
-    fd.set('confirmTold', e.target.confirmTold.checked);
-    fd.set('confirmConsent', e.target.confirmConsent.checked);
     const res=await fetch(url(C.WEBHOOKS.intake), {method:'POST', body:fd});
     if(!res.ok) throw new Error('Server responded '+res.status);
-    let data={}; try{data=await res.json()}catch(_){}
-    msg.className='msg ok';
-    msg.innerHTML='✅ Submitted! '+(data.submissionId?('Your Submission ID is <b>'+data.submissionId+'</b>. ':''))
-      +'You\'ll get a confirmation email. You can track it under “Check my status.”';
-    e.target.reset(); document.getElementById('filelist').innerHTML='';
+    let data={}; try{data=await res.json();}catch(_){}
+    // Remember teacher if requested
+    if(!teacher){
+      if($('remember').checked){ teacher={name:tName,email:tEmail}; localStorage.setItem(LSKEY, JSON.stringify(teacher)); }
+    }
+    renderWho();
+    $('successId').textContent = data.submissionId ? ('Submission ID: '+data.submissionId) : 'Submission received';
+    show('success');
   }catch(err){
     msg.className='msg err';
     msg.textContent='Could not submit: '+err.message+'. Please try again, or email nassausuffolkacademyofmusic@gmail.com.';
-  }finally{ btn.disabled=false; btn.textContent='Submit content'; }
+  }finally{
+    submitting=false; btn.disabled=false; btn.textContent='Submit';
+  }
 });
 
-// Status lookup
-async function lookupStatus(){
-  const q=document.getElementById('lookup').value.trim();
-  const msg=document.getElementById('statusMsg'), out=document.getElementById('statusResults');
+// ---- Status lookup (unchanged webhook contract) ----
+$('lookupBtn').addEventListener('click', async ()=>{
+  const q=$('lookup').value.trim();
+  const msg=$('statusMsg'), out=$('statusResults');
   msg.innerHTML=''; out.innerHTML='';
-  if(!q){msg.className='msg err';msg.textContent='Enter your email or a Submission ID.';return;}
-  if(C.N8N_BASE_URL.includes('YOUR-N8N-INSTANCE')){msg.className='msg err';msg.textContent='Setup needed: n8n URL not configured (config.js).';return;}
-  const btn=document.getElementById('lookupBtn'); btn.disabled=true; btn.innerHTML='<span class="spin"></span>Checking…';
+  if(!q){ msg.className='msg err'; msg.textContent='Enter your email or a Submission ID.'; return; }
+  if(C.N8N_BASE_URL.includes('YOUR-N8N-INSTANCE')){ msg.className='msg err'; msg.textContent='Setup needed: n8n URL not configured.'; return; }
+  const btn=$('lookupBtn'); btn.disabled=true; btn.innerHTML='<span class="spin"></span>Checking…';
   try{
-    const res=await fetch(url(C.WEBHOOKS.status), {method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({query:q})});
+    const res=await fetch(url(C.WEBHOOKS.status), {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:q})});
     if(!res.ok) throw new Error('Server responded '+res.status);
     const data=await res.json();
     const items=Array.isArray(data)?data:(data.submissions||[]);
     if(!items.length){ out.innerHTML='<div class="card empty">None submitted yet.</div>'; return; }
     out.innerHTML=items.map(s=>{
       const st=(s.status||s.Current_Status||'Submitted');
-      const cls='s-'+st.split(' ')[0];
-      return `<div class="sub-item">
-        <div class="t">${s.title||s.Submission_Title||'(untitled)'}</div>
+      return `<div class="sub-item"><div class="t">${s.title||s.Submission_Title||'(untitled)'}</div>
         <div class="meta">${s.submissionId||s.Submission_ID||''} · ${s.contentType||s.Content_Type||''}</div>
-        <div style="margin-top:8px"><span class="statuspill ${cls}">${st}</span></div>
-      </div>`;
+        <div style="margin-top:8px"><span class="statuspill s-${st.split(' ')[0]}">${st}</span></div></div>`;
     }).join('');
   }catch(err){ msg.className='msg err'; msg.textContent='Could not look up: '+err.message; }
   finally{ btn.disabled=false; btn.textContent='Check status'; }
-}
+});
+
+// Prefill teacher email into status lookup convenience
+if(teacher && teacher.email){ $('lookup').value = teacher.email; }
 </script>
 </body>
 </html>
