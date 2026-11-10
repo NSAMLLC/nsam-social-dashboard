@@ -36,6 +36,20 @@ const wf2 = { id: 'TESTSMLIST000001', name: 'TEST SM admin list (isolated)', act
     'Valid Token?': { main: [[{ node: 'STUB Read Submissions', type: 'main', index: 0 }], [{ node: 'Respond Denied', type: 'main', index: 0 }]] },
     'STUB Read Submissions': { main: [[{ node: 'Respond Rows', type: 'main', index: 0 }]] } } };
 fs.mkdirSync(out, { recursive: true });
+// --- execution-history protection fixtures: settings override + an ERROR path + an error workflow ---
+const extra = process.env.TEST_WF_SETTINGS ? JSON.parse(process.env.TEST_WF_SETTINGS) : {};
+const wf3 = { id: 'TESTSMBOOM000001', name: 'TEST SM error path (isolated)', active: false, settings: { executionOrder: 'v1', errorWorkflow: 'TESTERRWF0000001' },
+  nodes: [hook('Boom Webhook', 'test-sm-boom'),
+    { id: 'b', name: 'Boom', type: 'n8n-nodes-base.code', typeVersion: 2, position: [224, 0], parameters: { jsCode: "throw new Error('fictional failure');" } }],
+  connections: { 'Boom Webhook': { main: [[{ node: 'Boom', type: 'main', index: 0 }]] } } };
+const errwf = { id: 'TESTERRWF0000001', name: 'TEST error alert (isolated)', active: false, settings: { executionOrder: 'v1' },
+  nodes: [{ id: 'e', name: 'Error Trigger', type: 'n8n-nodes-base.errorTrigger', typeVersion: 1, position: [0, 0], parameters: {} },
+          { id: 'n', name: 'STUB Email', type: 'n8n-nodes-base.noOp', typeVersion: 1, position: [200, 0], parameters: {} }],
+  connections: { 'Error Trigger': { main: [[{ node: 'STUB Email', type: 'main', index: 0 }]] } } };
+for (const w of [wf1, wf2, wf3]) Object.assign(w.settings, extra);
+fs.writeFileSync(path.join(out, 'wf3.json'), JSON.stringify([wf3]));
+fs.writeFileSync(path.join(out, 'errwf.json'), JSON.stringify([errwf]));
+fs.mkdirSync(out, { recursive: true });
 fs.writeFileSync(path.join(out, 'wf1.json'), JSON.stringify([wf1]));
 fs.writeFileSync(path.join(out, 'wf2.json'), JSON.stringify([wf2]));
 const mk = (v) => JSON.stringify([{ id: 'TESTCRED00000001', name: 'TEST NSAM Admin Header', type: 'httpHeaderAuth', data: { name: 'X-NSAM-Admin-Token', value: v } }]);

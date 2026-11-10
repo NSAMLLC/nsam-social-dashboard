@@ -1,0 +1,9 @@
+{
+  "_comment": "Workflow settings to apply to BOTH NSAM SM 5 (P5b4npagxTism2RL) and NSAM SM - Admin List (Tu8bbdU7jce1ensg) BEFORE the new credential exists. UI names: Save failed production executions = Do not save; Save successful production executions = Do not save; Save manual executions = off; Save execution progress = off. Keep the existing errorWorkflow. Redaction is NOT used: it is Enterprise-only and hides data at read time without removing it from the database.",
+  "settings": {
+    "saveDataSuccessExecution": "none",
+    "saveDataErrorExecution": "none",
+    "saveManualExecutions": false,
+    "saveExecutionProgress": false
+  }
+}
