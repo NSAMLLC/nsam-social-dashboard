@@ -157,6 +157,8 @@
 <script>
 const C = window.NSAM_CONFIG;
 const apiUrl = p => (C.N8N_BASE_URL.replace(/\/$/,'')) + p;
+// Admin secret travels only in a request header (n8n Header Auth), never in the body or URL.
+const adminHeaders = () => ({'Content-Type':'application/json',[C.ADMIN_AUTH_HEADER||'X-NSAM-Admin-Token']:TOKEN});
 let TOKEN = "", DATA = [], CURRENT = null;
 
 // populate filters
@@ -192,7 +194,7 @@ function logout(){TOKEN="";DATA=[];document.getElementById('app').classList.add(
 async function loadBoard(silent){
   const bm=document.getElementById('boardMsg'); if(bm) bm.innerHTML='';
   try{
-    const res=await fetch(apiUrl(C.WEBHOOKS.adminList),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:TOKEN})});
+    const res=await fetch(apiUrl(C.WEBHOOKS.adminList),{method:'POST',headers:adminHeaders(),body:'{}'});
     if(res.status===401||res.status===403) return false;
     if(!res.ok) throw new Error('Server '+res.status);
     const d=await res.json();
@@ -368,8 +370,8 @@ async function act(action){
   if(action==='approve' && !payload.approver){msg.className='msg err';msg.textContent='Choose Michael or Danny as approver.';return;}
   msg.innerHTML='<div class="msg"><span class="spin"></span>Working…</div>';
   try{
-    const res=await fetch(apiUrl(C.WEBHOOKS.adminAction),{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({token:TOKEN,action,submissionId:id,payload})});
+    const res=await fetch(apiUrl(C.WEBHOOKS.adminAction),{method:'POST',headers:adminHeaders(),
+      body:JSON.stringify({action,submissionId:id,payload})});
     if(!res.ok) throw new Error('Server '+res.status);
     let d={};try{d=await res.json()}catch(_){}
     msg.className='msg ok'; msg.textContent=(d.message||'Done.')+' Refreshing…';
