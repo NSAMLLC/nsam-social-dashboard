@@ -1,0 +1,20 @@
+// Offline unit tests of the production Code-node source (ops/n8n/sm5-validate-build-update.js). Fictional values only.
+const fs = require('fs'), assert = require('assert');
+const src = fs.readFileSync(__dirname + '/../ops/n8n/sm5-validate-build-update.js', 'utf8');
+const run = (json) => new Function('$input', src)({ first: () => ({ json }) })[0].json;
+const H = { 'x-nsam-admin-token': 'FICTIONAL' };
+const req = (o, h = H) => ({ headers: h, body: { submissionId: 'F1', payload: {}, ...o } });
+let n = 0; const t = (name, fn) => { fn(); n++; console.log('PASS ' + name); };
+const LOCKED = ['approve', 'mark_ready_schedule', 'mark_scheduled', 'mark_posted', 'send_release_form'];
+const ALLOWED = ['request_revision', 'mark_needs_consent', 'redraft_caption', 'save_caption', 'add_analytics', 'save_notes', 'reject'];
+for (const a of LOCKED) t(`locked action ${a} denied 403 even with credential header`, () => { const r = run(req({ action: a })); assert.equal(r._authOk, false); assert.equal(r._status, 403); });
+for (const a of ALLOWED) t(`allowed action ${a} succeeds with credential header`, () => assert.equal(run(req({ action: a }))._authOk, true));
+for (const a of [...LOCKED, ...ALLOWED]) t(`missing header denies ${a} (fail closed if Webhook auth is ever set to None)`, () => { const r = run(req({ action: a }, {})); assert.equal(r._authOk, false); assert.equal(r._status, 401); });
+t('empty header value denied', () => assert.equal(run(req({ action: 'save_notes' }, { 'x-nsam-admin-token': '' }))._authOk, false));
+t('credential in body rejected', () => { const r = run(req({ action: 'save_notes', token: 'x' })); assert.equal(r._authOk, false); assert.equal(r._status, 400); });
+t('unknown action denied', () => assert.equal(run(req({ action: 'drop_table' }))._authOk, false));
+t('prototype-ish action names denied', () => { for (const a of ['__proto__', 'constructor', 'toString', undefined]) assert.equal(run(req({ action: a }))._authOk, false); });
+t('missing submissionId denied', () => assert.equal(run({ headers: H, body: { action: 'save_notes', payload: {} } })._authOk, false));
+t('source contains no hardcoded secret literal and no ADMIN_TOKEN', () => { assert(!/ADMIN_TOKEN/.test(src)); assert(!/['"][A-Za-z0-9]{20,}['"]/.test(src)); });
+t('all five lock names still present in source', () => LOCKED.forEach(a => assert(src.includes("'" + a + "'"))));
+console.log(`\n${n} passed, 0 failed`);

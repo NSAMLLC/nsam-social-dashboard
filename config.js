@@ -8,7 +8,7 @@
    - It is OK for these webhook URLs to be public. They are just endpoints.
    - DO NOT put any Google credentials, n8n API keys, or the admin
      password in this file. The admin password is NEVER stored here; it
-     is typed by the admin at login and verified inside n8n.
+     is typed by the admin at login and verified by n8n Header Auth (sent as a request header).
    - All privileged actions (approve, schedule, post) are validated
      server-side in n8n using a shared secret the admin types in.
    ===================================================================== */
@@ -24,6 +24,10 @@ window.NSAM_CONFIG = {
     adminList:   "/webhook/nsam-sm-admin-list",    // Admin: load submissions
     adminAction: "/webhook/nsam-sm-admin-action"   // Workflow 5: Admin Dashboard Actions
   },
+
+  // Name of the request header that carries the admin secret (n8n Header Auth).
+  // The header NAME is not secret; the VALUE is typed at login and never stored.
+  ADMIN_AUTH_HEADER: "X-NSAM-Admin-Token",
 
   // 3) Dropdown values (kept in sync with the Settings tab of the Sheet)
   CONTENT_TYPES: [
