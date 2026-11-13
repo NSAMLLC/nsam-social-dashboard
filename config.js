@@ -22,7 +22,9 @@ window.NSAM_CONFIG = {
     intake:      "/webhook/nsam-sm-intake",       // Workflow 1: Teacher Submission Intake
     status:      "/webhook/nsam-sm-status",        // Teacher status lookup
     adminList:   "/webhook/nsam-sm-admin-list",    // Admin: load submissions
-    adminAction: "/webhook/nsam-sm-admin-action"   // Workflow 5: Admin Dashboard Actions
+    reviewGet:    "/webhook/nsam-sm-review-get",
+     reviewDecide: "/webhook/nsam-sm-review-decide",
+     adminAction: "/webhook/nsam-sm-admin-action"   // Workflow 5: Admin Dashboard Actions
   },
 
   // Name of the request header that carries the admin secret (n8n Header Auth).
