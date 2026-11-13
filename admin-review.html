@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>NSAM Social — One-Visit Review</title>
+<style>
+  :root{--bg:#f6f5f2;--card:#fff;--ink:#1d1d1b;--mute:#6b6a66;--line:#dcdad3;--ok:#1f7a3d;--warn:#9a5b00;--bad:#b3261e;--accent:#2b4c7e}
+  @media (prefers-color-scheme:dark){:root{--bg:#161614;--card:#211f1d;--ink:#eeeae2;--mute:#a09b90;--line:#3a3733;--ok:#58c27d;--warn:#e0a33a;--bad:#ff8a80;--accent:#8db1ee}}
+  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,Segoe UI,sans-serif}
+  main{max-width:960px;margin:0 auto;padding:16px}
+  h1{font-size:20px;margin:8px 0 12px} h2{font-size:16px;margin:0 0 8px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;margin:12px 0}
+  .banner{border-left:4px solid var(--warn);background:var(--card);padding:10px 12px;border-radius:6px;border:1px solid var(--line);border-left-width:4px}
+  label{display:block;margin:8px 0 2px;font-weight:600} input[type=text],input[type=password],select{width:100%;padding:8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font:inherit}
+  .row{display:flex;gap:12px;flex-wrap:wrap} .row>*{flex:1 1 220px}
+  button{padding:9px 14px;border-radius:7px;border:1px solid var(--accent);background:var(--accent);color:#fff;font:inherit;cursor:pointer}
+  button.secondary{background:transparent;color:var(--accent)} button:disabled{opacity:.45;cursor:not-allowed}
+  .sug{border:1px solid var(--line);border-radius:8px;padding:10px;margin:8px 0}
+  .badge{display:inline-block;font-size:12px;padding:1px 8px;border-radius:99px;border:1px solid var(--line);margin-left:6px}
+  .EXACT{color:var(--ok);border-color:var(--ok)} .FUZZY_SUGGESTION{color:var(--warn);border-color:var(--warn)}
+  .mute{color:var(--mute)} .bad{color:var(--bad)} .ok{color:var(--ok)}
+  iframe{width:100%;height:320px;border:1px solid var(--line);border-radius:8px;background:#000}
+  pre{white-space:pre-wrap;word-break:break-word;background:var(--bg);padding:10px;border-radius:6px;border:1px solid var(--line)}
+  .check{display:flex;gap:8px;align-items:flex-start;margin:8px 0;font-weight:400} .check input{margin-top:4px}
+</style>
+</head>
+<body>
+<main>
+  <h1>NSAM Social — One-Visit Review</h1>
+  <div class="banner"><b>Content approval is not consent to publish.</b> This page only (1) confirms a student's identity, (2) records your content decision, and (3) separately asks for the release form to be sent to the verified guardian. RabbitSign authorization, opt-outs, revocations and all SM 5 restrictions still apply.</div>
+
+  <section class="card" id="loginCard">
+    <h2>Sign in</h2>
+    <label for="token">Admin token</label>
+    <input type="password" id="token" autocomplete="off" />
+    <p class="mute">Kept in this tab's memory only. Never stored or logged.</p>
+  </section>
+
+  <section class="card">
+    <h2>1. Open a submission</h2>
+    <div class="row"><div><label for="subId">Submission ID</label><input type="text" id="subId" placeholder="SM-2026-11-062417" /></div>
+    <div style="align-self:end"><button id="loadBtn">Load</button></div></div>
+    <div id="queue" class="mute"></div>
+    <div id="msg" role="status"></div>
+  </section>
+
+  <div id="review" hidden>
+    <section class="card"><h2>2. Submitted content</h2><div id="subInfo"></div><div id="media"></div></section>
+    <section class="card"><h2>3. Suggested students <span class="mute">(suggestions only, never confirmed automatically)</span></h2><div id="sugs"></div></section>
+    <section class="card">
+      <h2>4. Confirm identity and decide</h2>
+      <div class="row">
+        <div><label for="sid">Exact MMS Student ID</label><input type="text" id="sid" autocomplete="off" /></div>
+        <div><label for="fid">Exact MMS Family ID</label><input type="text" id="fid" autocomplete="off" /></div>
+        <div><label for="sidConfirm">Re-type the Student ID to confirm</label><input type="text" id="sidConfirm" autocomplete="off" /></div>
+      </div>
+      <div id="recipient" class="mute"></div>
+      <label for="by">Confirmed by</label>
+      <select id="by"><option value="">Choose…</option><option>Michael</option><option>Danny</option></select>
+      <label class="check"><input type="checkbox" id="optout" /> I checked opt-out / revocation records for this student and family.</label>
+      <label class="check" id="ackRow" hidden><input type="checkbox" id="ack" /> The teacher's spelling differs from the roster; I confirm this is the same student.</label>
+      <label>Content decision</label>
+      <div class="row">
+        <label class="check"><input type="radio" name="cd" value="APPROVE" /> Approve content</label>
+        <label class="check"><input type="radio" name="cd" value="REJECT" /> Reject</label>
+        <label class="check"><input type="radio" name="cd" value="HOLD" /> Hold</label>
+      </div>
+      <label class="check"><input type="checkbox" id="send" disabled /> Separately approve sending the release form to the verified guardian shown above (only available with Approve).</label>
+      <div class="row" style="margin-top:12px">
+        <button class="secondary" id="previewBtn" disabled>Check only (sends nothing)</button>
+        <button id="submitBtn" disabled>Record decision</button>
+      </div>
+      <p class="mute">Possible outcomes are shown exactly as the server returns them. A failed or uncertain send is never retried automatically; it needs reconciliation.</p>
+    </section>
+    <section class="card" id="resultCard" hidden><h2>Result</h2><div id="result"></div></section>
+  </div>
+</main>
+<script src="config.js"></script>
+<script>
+(function(){
+  'use strict';
+  // ---- configuration (edit paths after the production admin workflow is created) ----
+  // Reads the SAME config.js as admin.html (window.NSAM_CONFIG). No secret lives in config.js or this page.
+  var SHARED = (window.NSAM_CONFIG || {}), SW = (SHARED.WEBHOOKS || {});
+  var CFG = (window.NSAM_REVIEW_CONFIG || {});
+  var BASE = CFG.base || SHARED.N8N_BASE_URL || 'https://nsam.app.n8n.cloud';
+  var PATHS = { get: CFG.get || SW.reviewGet || '/webhook/nsam-sm-review-get', decide: CFG.decide || SW.reviewDecide || '/webhook/nsam-sm-review-decide', list: CFG.list || SW.reviewList || '' };
+  var HEADER = 'X-NSAM-Admin-Token';
+  var $ = function(id){ return document.getElementById(id); };
+  var state = { review: null, picked: null };
+
+  function el(tag, attrs, kids){ var e=document.createElement(tag); Object.keys(attrs||{}).forEach(function(k){ if(k==='text') e.textContent=attrs[k]; else e.setAttribute(k, attrs[k]); }); (kids||[]).forEach(function(c){ e.appendChild(typeof c==='string'?document.createTextNode(c):c); }); return e; }
+  function clear(n){ while(n.firstChild) n.removeChild(n.firstChild); }
+  function say(text, cls){ var m=$('msg'); clear(m); m.appendChild(el('p',{text:text,'class':cls||''})); }
+  function post(path, body){
+    return fetch(BASE+path,{method:'POST',headers:{'Content-Type':'application/json',[HEADER]:$('token').value},body:JSON.stringify(body)})
+      .then(function(r){ return r.text().then(function(t){ var j=null; try{ j=JSON.parse(t); }catch(e){} return {status:r.status,json:j}; }); });
+  }
+  function driveId(u){ var m=/\/d\/([A-Za-z0-9_-]{10,})/.exec(u||'')||/[?&]id=([A-Za-z0-9_-]{10,})/.exec(u||''); return m?m[1]:null; }
+
+  function renderReview(r){
+    state.review=r; $('review').hidden=false; clear($('resultCard').querySelector('#result')); $('resultCard').hidden=true;
+    var s=r.submission||{}, info=$('subInfo'); clear(info);
+    [['Entered name (by teacher)',s.enteredName],['Teacher',s.teacher],['Type',s.contentType],['Title',s.title],['Instrument',s.instrument],['Files',s.fileCount],
+     ['Teacher caption',s.teacherCaption],['AI caption draft',s.aiCaptionDraft],['Final caption',s.finalCaption],['Teacher says',s.consentSituationReportedByTeacher],
+     ['Consent status',s.consentStatus],['Release form sent at',s.releaseFormSentAt]].forEach(function(p){ if(p[1]) info.appendChild(el('p',{},[el('b',{text:p[0]+': '}),String(p[1])])); });
+    var media=$('media'); clear(media);
+    (s.assetLinks||[]).forEach(function(u){ var id=driveId(u); if(id){ var f=el('iframe',{src:'https://drive.google.com/file/d/'+id+'/preview',loading:'lazy',allow:'autoplay',title:'Submitted media'}); media.appendChild(f);} media.appendChild(el('p',{},[el('a',{href:u,target:'_blank',rel:'noopener noreferrer',text:'Open file'})])); });
+    if(!(s.assetLinks||[]).length && s.assetFolderLink) media.appendChild(el('p',{},[el('a',{href:s.assetFolderLink,target:'_blank',rel:'noopener noreferrer',text:'Open media folder'})]));
+    var sg=$('sugs'); clear(sg);
+    sg.appendChild(el('p',{'class':'mute',text:'Match route: '+(r.matchRoute||'—')}));
+    (r.suggestions||[]).forEach(function(c){
+      var b=el('button',{'class':'secondary',type:'button',text:'Use these IDs'});
+      b.addEventListener('click',function(){ pick(c); });
+      sg.appendChild(el('div',{'class':'sug'},[
+        el('b',{text:c.fullName}), el('span',{'class':'badge '+c.matchType,text:c.matchType==='EXACT'?'Exact name match':'Possible match ('+Math.round((c.score||0)*100)+'%)'}),
+        el('div',{'class':'mute',text:'Student ID '+c.studentId+' · Family ID '+c.familyId+' · roster status '+c.rosterStatus}),
+        el('div',{text:'Parent/guardian: '+((c.guardianNames||[]).join(', ')||'none on file')}),
+        el('div',{'class':'mute',text:'Release would go to: '+((c.guardianEmailsMasked||[]).join(', ')||'no guardian email on file')}),
+        c.flags?el('div',{'class':'bad',text:'Roster flags: '+c.flags}):el('span'),
+        c.duplicateRosterRows?el('div',{'class':'bad',text:'Duplicate roster rows for this ID'}):el('span'), b ]));
+    });
+    if(!(r.suggestions||[]).length) sg.appendChild(el('p',{text:'No suggestions. Enter the exact IDs from MyMusicStaff if you can identify the student.'}));
+    state.picked=null; $('sid').value=''; $('fid').value=''; $('sidConfirm').value=''; refresh();
+  }
+  function pick(c){ state.picked=c; $('sid').value=c.studentId; $('fid').value=c.familyId; $('sidConfirm').value='';
+    $('recipient').textContent='Verified guardian(s): '+((c.guardianNames||[]).join(', ')||'none')+' · '+((c.guardianEmailsMasked||[]).join(', ')||'no email'); refresh(); }
+  function refresh(){
+    var sid=$('sid').value.trim(), fid=$('fid').value.trim();
+    var cd=(document.querySelector('input[name=cd]:checked')||{}).value||'';
+    var needAck = state.picked && state.picked.studentId===sid && state.picked.matchType!=='EXACT';
+    $('ackRow').hidden=!needAck;
+    $('send').disabled = cd!=='APPROVE'; if(cd!=='APPROVE') $('send').checked=false;
+    var idsOk = sid && fid && sid===$('sidConfirm').value.trim();
+    var ready = idsOk && $('by').value && $('optout').checked && cd && (!needAck || $('ack').checked);
+    $('submitBtn').disabled=!ready; $('previewBtn').disabled=!(ready && cd==='APPROVE');
+    if(!(state.picked && state.picked.studentId===sid)) $('recipient').textContent = sid ? 'IDs entered manually: the server will look up the guardian from the roster and show it in the result.' : '';
+  }
+  ['sid','fid','sidConfirm','by','optout','ack','send'].forEach(function(i){ $(i).addEventListener('input',refresh); $(i).addEventListener('change',refresh); });
+  Array.prototype.forEach.call(document.querySelectorAll('input[name=cd]'),function(r){ r.addEventListener('change',refresh); });
+
+  function submit(preview){
+    var cd=document.querySelector('input[name=cd]:checked').value;
+    var body={submissionId:state.review.submissionId,studentId:$('sid').value.trim(),familyId:$('fid').value.trim(),optOutChecked:$('optout').checked,
+      confirmedBy:$('by').value,contentDecision:cd,releaseSendApproved:!preview && cd==='APPROVE' && $('send').checked};
+    if($('ack').checked && !$('ackRow').hidden) body.nameCorrectionAck=true;
+    $('submitBtn').disabled=true; $('previewBtn').disabled=true;
+    post(PATHS.decide,body).then(function(res){ showResult(res); }).catch(function(){ showResult({status:0,json:null}); }).then(function(){ refresh(); });
+  }
+  $('submitBtn').addEventListener('click',function(){ submit(false); });
+  $('previewBtn').addEventListener('click',function(){ submit(true); });
+
+  var OUTCOMES={RELEASE_REQUESTED:['ok','Release form request sent to the verified guardian.'],IDENTITY_VERIFIED_RELEASE_NOT_REQUESTED:['ok','Identity checks passed. Nothing was sent.'],
+    CONTENT_REJECTED:['ok','Content rejected and logged.'],CONTENT_ON_HOLD:['ok','Content on hold and logged.'],ALREADY_REQUESTED:['ok','A release form was already requested. Nothing sent.'],
+    IN_PROGRESS:['bad','A request for this submission is already in progress or needs reconciliation. Nothing was sent. Ask the system owner to reconcile before retrying.'],
+    SEND_FAILED_RECONCILE_REQUIRED:['bad','The send could not be confirmed. It will NOT be retried automatically. Reconcile before trying again.'],
+    CLAIM_NOT_WON:['bad','Another request for this submission took priority. Nothing sent from this one.'],ADMIN_REVIEW:['bad','Blocked for manual review. See the reason below. Nothing was sent.']};
+  function showResult(res){
+    var box=$('result'); clear(box); $('resultCard').hidden=false;
+    if(res.status===401||res.status===403){ box.appendChild(el('p',{'class':'bad',text:'Not authorized. Check the admin token.'})); return; }
+    if(!res.json||!res.json.decision){ box.appendChild(el('p',{'class':'bad',text:'No clear answer from the server (HTTP '+res.status+'). Assume NOTHING was sent and check the Admin Decisions log before trying again.'})); return; }
+    var j=res.json, o=OUTCOMES[j.decision]||['bad',j.decision];
+    box.appendChild(el('p',{'class':o[0],text:o[1]}));
+    box.appendChild(el('pre',{text:['Decision: '+j.decision,'Reason: '+(j.reason||''),'Identity: '+(j.verification||''),'Guardian(s): '+((j.guardianNames||[]).join(', ')||'—'),'Recipient(s): '+((j.recipientsMasked||[]).join(', ')||'—'),
+      'Consent authorized: '+j.consentAuthorized,'Publish allowed: '+j.publishAllowed].join('\n')}));
+  }
+
+  function load(id){
+    id=(id||$('subId').value).trim(); if(!id){ say('Enter a Submission ID.','bad'); return; }
+    say('Loading…'); $('review').hidden=true;
+    post(PATHS.get,{submissionId:id}).then(function(res){
+      if(res.status===401||res.status===403){ say('Not authorized. Check the admin token.','bad'); return; }
+      if(!res.json){ say('No readable answer from the server (HTTP '+res.status+').','bad'); return; }
+      if(res.json.decision!=='REVIEW_READY'){ say('Not available: '+(res.json.reason||res.json.decision),'bad'); return; }
+      say(''); renderReview(res.json);
+    }).catch(function(){ say('Could not reach the server.','bad'); });
+  }
+  $('loadBtn').addEventListener('click',function(){ load(); });
+  window.__nsamReview={load:load};
+})();
+</script>
+</body>
+</html>
