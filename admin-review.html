@@ -162,9 +162,12 @@
     if(res.status===401||res.status===403){ box.appendChild(el('p',{'class':'bad',text:'Not authorized. Check the admin token.'})); return; }
     if(!res.json||!res.json.decision){ box.appendChild(el('p',{'class':'bad',text:'No clear answer from the server (HTTP '+res.status+'). Assume NOTHING was sent and check the Admin Decisions log before trying again.'})); return; }
     var j=res.json, o=OUTCOMES[j.decision]||['bad',j.decision];
-    box.appendChild(el('p',{'class':o[0],text:o[1]}));
+    // Audit guard: every real decision must be confirmed as written to the Admin Decisions log. Only INVALID_REQUEST (rejected before any decision) is exempt.
+    var auditMissing = j.decision!=='INVALID_REQUEST' && j.auditLogged!==true;
+    if(auditMissing){ box.appendChild(el('p',{'class':'bad',id:'auditWarn',role:'alert',text:'WARNING: this decision was NOT confirmed as saved to the Admin Decisions log. Do not rely on it. Check the Admin Decisions tab and tell the system owner before trying again.'})); }
+    box.appendChild(el('p',{'class':auditMissing?'bad':o[0],text:o[1]}));
     box.appendChild(el('pre',{text:['Decision: '+j.decision,'Reason: '+(j.reason||''),'Identity: '+(j.verification||''),'Guardian(s): '+((j.guardianNames||[]).join(', ')||'—'),'Recipient(s): '+((j.recipientsMasked||[]).join(', ')||'—'),
-      'Consent authorized: '+j.consentAuthorized,'Publish allowed: '+j.publishAllowed].join('\n')}));
+      'Consent authorized: '+j.consentAuthorized,'Publish allowed: '+j.publishAllowed,'Saved to Admin Decisions log: '+(j.auditLogged===true?'yes':(j.decision==='INVALID_REQUEST'?'n/a (rejected before any decision)':'NO'))].join('\n')}));
   }
 
   function load(id){
